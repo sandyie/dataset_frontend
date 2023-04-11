@@ -1,20 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { BsCurrencyDollar } from 'react-icons/bs';
-import { GoPrimitiveDot } from 'react-icons/go';
-import { IoIosMore } from 'react-icons/io';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-
-import { Stacked, Pie, Button, LineChart, SparkLine } from '../components';
-import { earningData, medicalproBranding, recentTransactions, weeklyStats, dropdownData, dropdownData1, SparklineAreaData, ecomPieChartData } from '../data/dummy';
+import React, { useState, useRef } from 'react';
+import Multiselect from 'multiselect-react-dropdown';
 import { useStateContext } from '../contexts/ContextProvider';
-import product9 from '../data/product9.jpg';
-import Multiselect from "multiselect-react-dropdown";
 import {augment_tags} from '../data/DeathNumberDataset.js';
 
 
 
 const QueryPage = () => {
   const { currentColor, currentMode } = useStateContext();
+  const [result, setResult] = useState(augment_tags);
 
   const multiselectRef = useRef(null);
 
@@ -30,19 +23,18 @@ const QueryPage = () => {
 
   const submit = (event) => {
     event.preventDefault();
-    // combine selected tags into string seperated by comma
     const selectedArr = multiselectRef.current.getSelectedItems();
     const tagSet = new Set(selectedArr);
     const tagSize = tagSet.size;
-    // console.log("jsonObjArray", augment_tags);
-    const filteredArray = augment_tags.filter(jsonObj => {
+    const filteredArray = augment_tags.filter((jsonObj) => {
       const datasetTag = new Set(jsonObj.tags.concat(jsonObj.augment_tag));
       const intersect = new Set([...datasetTag].filter(x => tagSet.has(x)));
       return intersect.size === tagSize;
-      });
-
+    });
+  
     setResult(filteredArray);
   }
+  
 
   // USE_STATES 
   const [tag, setTag] = useState(['40-49', 'circulatory-disease', 'covid', 'african-american', 
@@ -66,8 +58,6 @@ const QueryPage = () => {
                         'md', '50-59', '60-69', 'public-health', 'united-states', 'hispanic-origin', 'open-data', 
                         'cerebrovascular-disease'])
 // const [result, setResult] = useState([]);
-
-const [result, setResult] = useState(augment_tags);
 
 
 
